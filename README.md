@@ -1,5 +1,5 @@
-deepthought
-===========
+Deep Thought
+============
 
 Deep Thought API
 
