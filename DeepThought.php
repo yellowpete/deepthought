@@ -101,15 +101,15 @@ class DeepThought {
 			curl_close($ch);
 		} else {
 			curl_close($ch);
-    		$response_data = unserialize(trim($this->response));
+            if($params["format"] == "json") {
+                $response_data = (array) json_decode(trim($this->response));
+            } else {
+                $response_data = unserialize(trim($this->response));
+            }
 			if(isset($response_data['errorNum']) && $response_data['errorNum'] > 0) {
 				throw new RuntimeException("DeepThought API:".$response_data['errorDescription'], $response_data['errorNum']);
 			} else {
-                if(isset($params["format"])) {
-                    return json_decode(trim($this->response));
-                } else {
-				    return $response_data;
-                }
+				return $response_data;
 			}
 		}
 	}
