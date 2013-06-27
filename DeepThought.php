@@ -1,4 +1,16 @@
 <?php
+/*
+ Copyright (c) 2013 All Right Reserved, Probability Games Ltd
+
+ This source is subject to the Apache License 2.0.
+ Please see http://www.apache.org/licenses/LICENSE-2.0 for more information.
+ All other rights reserved.
+
+ THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ PARTICULAR PURPOSE.
+*/
 
 class DeepThought {
 
@@ -42,14 +54,22 @@ class DeepThought {
 		return $this->_sendToDeepThoughtService("reporting.keywordReport", $params);
 	}
 
-	function user_create($params = array()) {
-		return $this->_sendToDeepThoughtService("user.create", $params);
-	}
+    function user_create($params = array()) {
+        return $this->_sendToDeepThoughtService("user.create", $params);
+    }
+    
+    function user_limit($params = array()) {
+    	return $this->_sendToDeepThoughtService("user.userLimit", $params);
+    }
 
+    function user_history($params = array()) {
+    	return $this->_sendToDeepThoughtService("user.userHistory", $params);
+    }
+    
 	function _sendToDeepThoughtService($method, $params = array()) {
 
 		$this->url = $this->api_url . $method . "?apiKey=" . urlencode($this->config["apiKey"]);
-		if(isset($params) && is_array($params)) {
+		if(isset($params) && is_array($params) && (empty($params['method']) || $params['method']!='post')) {
 			foreach($params as $k=>$v) {
 				$this->url .= "&" . urlencode($k) . "=" . urlencode($v);
 			}
@@ -64,6 +84,11 @@ class DeepThought {
 		curl_setopt($ch, CURLOPT_URL,$this->url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 1800);
+        if (!empty($params['method']) && $params['method']=='post') {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type:application/json"));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+        }
 		if($this->api_url != $this->prod_api_url) {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -76,7 +101,7 @@ class DeepThought {
 			curl_close($ch);
 			$response_data = unserialize(trim($this->response));
 			if(isset($response_data['errorNum']) && $response_data['errorNum'] > 0) {
-				throw new RuntimeException($this->url." DeepThought API:".$response_data['errorDescription'], $response_data['errorNum']);
+				throw new RuntimeException("DeepThought API:".$response_data['errorDescription'], $response_data['errorNum']);
 			} else {
 				if(isset($params["format"])) {
 					return $this->response;
@@ -85,6 +110,6 @@ class DeepThought {
 			}
 		}
 	}
-}
 
+}
 ?>
