@@ -14,14 +14,22 @@ Example usage:
     $dt = new DeepThought($dtConfig);
     
     $params = array();
-    $params->firstName = "Joe";
-    $params->lastName = "Bloggs";
-    $params->dob = "01011970";
+    $params["firstName"] = "Joe";
+    $params["lastName"] = "Bloggs";
+    $params["dob"] = "01011970";
     ...
     
     try {
-        $dt->user_create();
+        $resp = $dt->user_create();
     } catch(Exception $e) {
         echo 'Caught exception: ',  $e->getMessage(), "\n";
     }
+    
+    if (!$resp["response"] != "SUCCESS") {
+        echo "Uh-oh, something went wrong.\n";
+    }
+    
+    $user_id = $resp["parameters"]["user_id"];
+    $token = $resp["parameters"]["token"];
+    
     ?>
