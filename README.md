@@ -10,6 +10,7 @@ You will need an API Key to use the service, this can be obtained from your acco
 Example usage:
 
     <?php
+    include_once("DeepThought.php");
     $dtConfig = array("apiKey" => [MY API KEY]);
     $dt = new DeepThought($dtConfig);
     
