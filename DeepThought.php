@@ -102,7 +102,7 @@ class DeepThought {
 		} else {
 			curl_close($ch);
             if($params["format"] == "json") {
-                $response_data = (array) json_decode(trim($this->response));
+                $response_data = json_decode(trim($this->response), true);
             } else {
                 $response_data = unserialize(trim($this->response));
             }
