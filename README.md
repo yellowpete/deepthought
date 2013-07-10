@@ -20,7 +20,7 @@ Example usage:
     $params = array();
     $params["firstName"] = "Joe";
     $params["lastName"] = "Bloggs";
-    $params["dob"] = "01011970";
+    $params["dateOfBirth"] = "01011970";
     ...
     
     try {
