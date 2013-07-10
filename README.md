@@ -24,7 +24,7 @@ Example usage:
     ...
     
     try {
-        $resp = $dt->user_create();
+        $resp = $dt->user_create($params);
     } catch(Exception $e) {
         echo 'Caught exception: ',  $e->getMessage(), "\n";
         exit;
