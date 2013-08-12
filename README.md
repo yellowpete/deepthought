@@ -1,6 +1,8 @@
 Deep Thought
 ============
 
+http://probabilitydev.github.io/deepthought/
+
 Deep Thought API
 
 This is a PHP Bridge module, allowing simple access to the Probability Deep Thought API.
